@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Juego: Cazador de errores · Métodos Numéricos</title>
+<meta name="description" content="Actividad 3: juego de repaso sobre Introducción y Teoría de errores.">
+
+<meta name="color-scheme" content="light dark">
+<script>(function(){try{var t=localStorage.getItem('mn-theme');if(!t){t=window.matchMedia&&matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light';}document.documentElement.setAttribute('data-theme',t);}catch(e){}})();</script>
+<link rel="stylesheet" href="../assets/css/styles.css?v=4">
+<link rel="stylesheet" href="../assets/css/juego-duo.css?v=5">
+</head>
+<body>
+<header class="site-header">
+  <div class="header-inner">
+    <a class="brand" href="../index.html"><span class="brand-mark" aria-hidden="true"><svg viewBox="0 0 40 40" focusable="false"><defs><linearGradient id="bmg" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#4B66F0"/><stop offset="1" stop-color="#7A3DCF"/></linearGradient></defs><rect width="40" height="40" rx="11" fill="url(#bmg)"/><path d="M9 30 C 16 30, 20 14, 31 12" fill="none" stroke="#fff" stroke-width="2.6" stroke-linecap="round"/><circle cx="31" cy="12" r="3.3" fill="#FF7B47"/></svg></span><span class="brand-text"><strong>Métodos Numéricos</strong><span>Introducción y Teoría de errores</span></span></a>
+    <button class="nav-toggle" aria-expanded="false" aria-label="Abrir menú">Menú ≡</button>
+    <nav class="main-nav">
+      <a href="../proposito/index.html" class="">Propósito</a>
+      <div class="nav-dropdown">
+        <button type="button" class="nav-dropdown-toggle" aria-expanded="false" aria-haspopup="true">Temas <span class="caret">&#9662;</span></button>
+        <div class="nav-dropdown-panel">
+          <div class="nav-group">
+            <p class="nav-group-title">Unidad 1 — Introducción y teoría de errores</p>
+            <a href="../introduccion/index.html" class=""><span class="num">01</span>Introducción</a>
+            <a href="../representacion-numeros/index.html" class=""><span class="num">02</span>Representación</a>
+            <a href="../aritmetica-punto-flotante/index.html" class=""><span class="num">03</span>Aritmética</a>
+            <a href="../errores-redondeo/index.html" class=""><span class="num">04</span>Errores</a>
+            <a href="../algoritmos-convergencia/index.html" class=""><span class="num">05</span>Algoritmos</a>
+            <a href="../python-metodos-numericos/index.html" class=""><span class="num">06</span>Python</a>
+          </div>
+          <div class="nav-group">
+            <p class="nav-group-title">Unidad 2 — Solución de ecuaciones no lineales</p>
+            <a href="../tasas-convergencia/index.html" class=""><span class="num">07</span>Tasas de convergencia</a>
+            <a href="../metodo-biseccion/index.html" class=""><span class="num">08</span>Bisección</a>
+            <a href="../metodo-punto-fijo/index.html" class=""><span class="num">09</span>Punto fijo</a>
+            <a href="../metodo-newton/index.html" class=""><span class="num">10</span>Newton</a>
+          </div>
+          <div class="nav-group">
+            <p class="nav-group-title">Unidad 3 — Ecuaciones diferenciales ordinarias</p>
+            <a href="../metodo-euler/index.html" class=""><span class="num">11</span>Euler</a>
+            <a href="../metodo-taylor/index.html" class=""><span class="num">12</span>Taylor</a>
+            <a href="../metodo-runge-kutta/index.html" class=""><span class="num">13</span>Runge-Kutta</a>
+            <a href="../metodos-multipaso/index.html" class=""><span class="num">14</span>Métodos multipaso</a>
+          </div>
+        </div>
+      </div>
+      <a href="../juegos/index.html" class="active">Juegos</a>
+      <a href="../recursos/index.html" class="">Recursos</a>
+      <a href="../contacto/index.html" class="">Contacto</a>
+      <a href="../acerca-de/index.html" class="">Acerca de</a>
+    </nav>
+  <button class="theme-toggle" type="button" aria-label="Cambiar entre tema claro y oscuro" title="Cambiar tema"><svg class="i-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/></svg><svg class="i-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></svg></button>
+  </div>
+</header>
+
+<div class="page-head">
+  <p class="kicker">Actividad 3 — Diseño de un juego</p>
+  <h1>Cazador de errores</h1>
+  <p class="dek">Un quiz rápido para poner a prueba lo aprendido en los seis temas de la unidad: introducción, representación numérica, aritmética de punto flotante, errores de redondeo, algoritmos y convergencia, y Python.</p>
+</div>
+
+<div class="dl-wrap">
+  <div class="dl" id="dl">
+
+    <section id="dl-intro" class="dl-intro">
+      <div class="dl-hero-m" id="dl-hero-m"></div>
+      <h2>Lección de la Unidad 1</h2>
+      <p>Practica en una tanda corta de 10 ejercicios sobre los seis temas de la unidad.</p>
+      <ul class="dl-chips" aria-label="Temas incluidos">
+        <li>Introducción</li><li>Representación</li><li>Punto flotante</li><li>Errores</li><li>Algoritmos</li><li>Python</li>
+      </ul>
+      <ul class="dl-rules">
+        <li><span class="dl-ico dl-ico-heart"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path fill="currentColor" d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg></span><span><strong>5 corazones.</strong> Cada respuesta incorrecta te quita uno.</span></li>
+        <li><span class="dl-ico dl-ico-star"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path fill="currentColor" d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg></span><span><strong>10 XP por acierto</strong> (5 XP al repasar). Verás tu <em>error relativo</em> al final.</span></li>
+        <li><span class="dl-ico dl-ico-repeat"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path fill="currentColor" d="M7 7h10v3l4-4-4-4v3H5v6h2V7zm10 10H7v-3l-4 4 4 4v-3h12v-6h-2v4z"/></svg></span><span><strong>Los fallos se repiten</strong> al final para que los domines.</span></li>
+        <li><span class="dl-ico dl-ico-flame"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path fill="currentColor" d="M13.5.67s.74 2.65.74 4.8c0 2.06-1.35 3.73-3.41 3.73-2.07 0-3.63-1.67-3.63-3.73l.03-.36C5.21 7.51 4 10.62 4 14c0 4.42 3.58 8 8 8s8-3.58 8-8C20 8.61 17.41 3.8 13.5.67zM11.71 19c-1.78 0-3.22-1.4-3.22-3.14 0-1.62 1.05-2.76 2.81-3.12 1.77-.36 3.6-1.21 4.62-2.58.39 1.29.59 2.65.59 4.04 0 2.65-2.15 4.8-4.8 4.8z"/></svg></span><span><strong>Gana rachas</strong> acertando varias seguidas. Atajos: teclas 1–4 y Enter.</span></li>
+      </ul>
+      <button id="game-start-btn" class="dl-btn" type="button">Comenzar</button>
+    </section>
+
+    <section id="game-play" class="dl-play" hidden>
+      <header class="dl-top">
+        <button id="dl-quit" class="dl-x" type="button" aria-label="Salir de la lección"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M6 6l12 12M18 6L6 18" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"/></svg></button>
+        <div id="dl-bar" class="dl-bar zero" role="progressbar" aria-label="Progreso de la lección" aria-valuemin="0" aria-valuenow="0" aria-valuemax="10"><i id="dl-bar-fill"></i></div>
+        <span id="dl-streak" class="dl-stat dl-streak" title="Racha de aciertos" hidden><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path fill="currentColor" d="M13.5.67s.74 2.65.74 4.8c0 2.06-1.35 3.73-3.41 3.73-2.07 0-3.63-1.67-3.63-3.73l.03-.36C5.21 7.51 4 10.62 4 14c0 4.42 3.58 8 8 8s8-3.58 8-8C20 8.61 17.41 3.8 13.5.67zM11.71 19c-1.78 0-3.22-1.4-3.22-3.14 0-1.62 1.05-2.76 2.81-3.12 1.77-.36 3.6-1.21 4.62-2.58.39 1.29.59 2.65.59 4.04 0 2.65-2.15 4.8-4.8 4.8z"/></svg><b id="dl-streak-n">0</b></span>
+        <span id="game-lives" class="dl-stat dl-hearts" title="Corazones"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path fill="currentColor" d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg><b id="dl-hearts-n">5</b></span>
+        <button id="dl-sound" class="dl-snd" type="button" aria-pressed="true" aria-label="Sonido activado"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path fill="currentColor" d="M3 10v4h4l5 4V6L7 10H3z"/><g class="i-on" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M15.5 8.5a5 5 0 010 7"/><path d="M18.5 6a8.5 8.5 0 010 12"/></g><path class="i-off" d="M16 9l6 6M22 9l-6 6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg></button>
+      </header>
+
+      <div class="dl-body">
+        <p id="game-tema" class="dl-tema">Tema</p>
+        <h2 id="game-pregunta" class="dl-q">Pregunta</h2>
+        <div id="dl-area"></div>
+      </div>
+
+      <footer id="dl-foot" class="dl-foot" data-fb="none">
+        <div id="game-feedback" class="dl-fb" aria-live="polite" hidden></div>
+        <button id="game-check-btn" class="dl-btn" type="button" disabled>Comprobar</button>
+      </footer>
+    </section>
+
+    <section id="game-end" class="dl-end" hidden>
+      <div id="dl-end-mascot" class="dl-end-m"></div>
+      <h2 id="game-end-title">¡Lección completada!</h2>
+      <div class="dl-stats">
+        <div class="dl-card"><span>XP total</span><b id="dl-xp">0</b></div>
+        <div class="dl-card c-green"><span>Precisión</span><b id="dl-prec">0%</b></div>
+        <div class="dl-card c-blue"><span>Tiempo</span><b id="dl-time">0:00</b></div>
+      </div>
+      <p id="game-end-score" class="game-end-score">Puntaje: 0 / 100</p>
+      <p id="game-end-msg">Mensaje de resultado.</p>
+      <div class="dl-end-actions">
+        <button id="game-replay-btn" class="dl-btn" type="button">Jugar de nuevo</button>
+        <a class="dl-btn dl-btn-ghost" href="../juego-unidad2/index.html">Siguiente juego</a>
+      </div>
+    </section>
+
+    <div id="dl-modal" class="dl-modal" role="dialog" aria-modal="true" aria-labelledby="dl-modal-t" hidden>
+      <div class="dl-modal-card">
+        <div class="dl-mascot-s"></div>
+        <h3 id="dl-modal-t">¿Seguro que quieres salir?</h3>
+        <p>Si sales ahora perderás el progreso de esta lección.</p>
+        <button id="dl-stay" class="dl-btn" type="button">Seguir practicando</button>
+        <button id="dl-leave" class="dl-link" type="button">Salir</button>
+      </div>
+    </div>
+
+    <div id="dl-confetti" class="dl-confetti" aria-hidden="true"></div>
+  </div>
+</div>
+
+<nav class="page-nav">
+  <a href="../python-metodos-numericos/index.html"><span class="dir">← Tema anterior</span><span class="ttl">Introducción a Python para métodos numéricos</span></a>
+  <a class="next" href="../juego-unidad2/index.html"><span class="dir">Siguiente →</span><span class="ttl">Cazadores de raíces (Unidad 2)</span></a>
+</nav>
+
+<footer class="site-footer">
+  <div class="footer-inner">
+    <p class="fmeta">Métodos Numéricos — Facultad de Ingeniería de Sistemas, 7.º semestre<br>Fundación Universitaria Claretiana (Uniclaretiana) · Docente: Nancy González Ramírez</p>
+    <nav>
+      <a href="../index.html">Inicio</a>
+      <a href="../recursos/index.html">Recursos</a><a href="../contacto/index.html">Contacto</a>
+      <a href="../acerca-de/index.html">Acerca de</a>
+    </nav>
+  </div>
+</footer>
+<script src="../assets/js/main.js?v=4"></script>
+<script src="../assets/js/juego.js?v=5"></script>
+</body>
+</html>

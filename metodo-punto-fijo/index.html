@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Método de iteración de punto fijo · Métodos Numéricos</title>
+<meta name="description" content="Reescribir f(x) = 0 como x = g(x) e iterar hasta que la sucesión se estabilice.">
+
+<meta name="color-scheme" content="light dark">
+<script>(function(){try{var t=localStorage.getItem('mn-theme');if(!t){t=window.matchMedia&&matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light';}document.documentElement.setAttribute('data-theme',t);}catch(e){}})();</script>
+<link rel="stylesheet" href="../assets/css/styles.css?v=4">
+</head>
+<body data-unit="2">
+<header class="site-header">
+  <div class="header-inner">
+    <a class="brand" href="../index.html"><span class="brand-mark" aria-hidden="true"><svg viewBox="0 0 40 40" focusable="false"><defs><linearGradient id="bmg" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#4B66F0"/><stop offset="1" stop-color="#7A3DCF"/></linearGradient></defs><rect width="40" height="40" rx="11" fill="url(#bmg)"/><path d="M9 30 C 16 30, 20 14, 31 12" fill="none" stroke="#fff" stroke-width="2.6" stroke-linecap="round"/><circle cx="31" cy="12" r="3.3" fill="#FF7B47"/></svg></span><span class="brand-text"><strong>Métodos Numéricos</strong><span>Introducción y Teoría de errores</span></span></a>
+    <button class="nav-toggle" aria-expanded="false" aria-label="Abrir menú">Menú ≡</button>
+    <nav class="main-nav">
+      <a href="../proposito/index.html" class="">Propósito</a>
+      <div class="nav-dropdown">
+        <button type="button" class="nav-dropdown-toggle active" aria-expanded="false" aria-haspopup="true">Temas <span class="caret">&#9662;</span></button>
+        <div class="nav-dropdown-panel">
+          <div class="nav-group">
+            <p class="nav-group-title">Unidad 1 — Introducción y teoría de errores</p>
+            <a href="../introduccion/index.html" class=""><span class="num">01</span>Introducción</a>
+            <a href="../representacion-numeros/index.html" class=""><span class="num">02</span>Representación</a>
+            <a href="../aritmetica-punto-flotante/index.html" class=""><span class="num">03</span>Aritmética</a>
+            <a href="../errores-redondeo/index.html" class=""><span class="num">04</span>Errores</a>
+            <a href="../algoritmos-convergencia/index.html" class=""><span class="num">05</span>Algoritmos</a>
+            <a href="../python-metodos-numericos/index.html" class=""><span class="num">06</span>Python</a>
+          </div>
+          <div class="nav-group">
+            <p class="nav-group-title">Unidad 2 — Solución de ecuaciones no lineales</p>
+            <a href="../tasas-convergencia/index.html" class=""><span class="num">07</span>Tasas de convergencia</a>
+            <a href="../metodo-biseccion/index.html" class=""><span class="num">08</span>Bisección</a>
+            <a href="../metodo-punto-fijo/index.html" class="active"><span class="num">09</span>Punto fijo</a>
+            <a href="../metodo-newton/index.html" class=""><span class="num">10</span>Newton</a>
+          </div>
+          <div class="nav-group">
+            <p class="nav-group-title">Unidad 3 — Ecuaciones diferenciales ordinarias</p>
+            <a href="../metodo-euler/index.html" class=""><span class="num">11</span>Euler</a>
+            <a href="../metodo-taylor/index.html" class=""><span class="num">12</span>Taylor</a>
+            <a href="../metodo-runge-kutta/index.html" class=""><span class="num">13</span>Runge-Kutta</a>
+            <a href="../metodos-multipaso/index.html" class=""><span class="num">14</span>Métodos multipaso</a>
+          </div>
+        </div>
+      </div>
+      <a href="../juegos/index.html" class="">Juegos</a>
+      <a href="../recursos/index.html" class="">Recursos</a>
+      <a href="../contacto/index.html" class="">Contacto</a>
+      <a href="../acerca-de/index.html" class="">Acerca de</a>
+    </nav>
+  <button class="theme-toggle" type="button" aria-label="Cambiar entre tema claro y oscuro" title="Cambiar tema"><svg class="i-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/></svg><svg class="i-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></svg></button>
+  </div>
+</header>
+
+<div class="page-head">
+  <p class="kicker">Tema 09 — Solución de ecuaciones no lineales</p>
+  <h1>Método de iteración de punto fijo</h1>
+  <p class="dek">Reescribir f(x) = 0 como x = g(x) e iterar hasta que la sucesión se estabilice.</p>
+</div>
+
+<div class="topic-photo">
+  <figure>
+    <img src="https://commons.wikimedia.org/wiki/Special:FilePath/NautilusCutawayLogarithmicSpiral.jpg?width=900" alt="Corte transversal de una concha de nautilo, mostrando una espiral logarítmica que converge hacia un punto central" loading="lazy">
+    <figcaption>
+      <span>Una espiral que converge hacia un centro: la misma idea geométrica detrás de la iteración de punto fijo</span>
+      <a href="https://commons.wikimedia.org/wiki/File:NautilusCutawayLogarithmicSpiral.jpg" target="_blank" rel="noopener">Wikimedia Commons ↗</a>
+    </figcaption>
+  </figure>
+</div>
+
+
+<div class="media-grid">
+  <figure class="topic-figure">
+    <svg viewBox="0 0 320 190" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Diagrama de telaraña mostrando la convergencia de la iteración de punto fijo entre la recta y=x y la curva g(x)">
+      <line x1="30" y1="170" x2="30" y2="20" stroke="var(--ink)" stroke-width="1.5"/>
+      <line x1="30" y1="170" x2="300" y2="170" stroke="var(--ink)" stroke-width="1.5"/>
+      <line x1="30" y1="170" x2="280" y2="20" stroke="var(--ink-soft)" stroke-width="1.5"/>
+      <text x="265" y="35" font-family="IBM Plex Mono, monospace" font-size="10" fill="var(--ink-soft)">y = x</text>
+      <path d="M30 150 C 120 40, 220 40, 260 90" fill="none" stroke="var(--brass-deep)" stroke-width="2"/>
+      <text x="255" y="80" font-family="IBM Plex Mono, monospace" font-size="10" fill="var(--brass-deep)">g(x)</text>
+      <path d="M90 170 L90 108 L 176 108 L176 141 L 210 141 L210 122 L 224 122"
+            fill="none" stroke="var(--crimson)" stroke-width="1.6"/>
+      <circle cx="90" cy="170" r="3" fill="var(--crimson)"/>
+      <circle cx="224" cy="122" r="3.5" fill="var(--crimson)"/>
+      <text x="90" y="183" text-anchor="middle" font-family="IBM Plex Mono, monospace" font-size="9" fill="var(--ink-soft)">x₀</text>
+      <text x="224" y="112" text-anchor="middle" font-family="IBM Plex Mono, monospace" font-size="9" fill="var(--crimson)">x*</text>
+    </svg>
+    <figcaption>La iteración rebota entre la curva g(x) y la recta y = x hasta estabilizarse.</figcaption>
+  </figure>
+  <div class="video-card">
+    <p class="video-intro">¿Prefieres no leer? Mira este video sobre el tema:</p>
+    <div class="video-wrap">
+      <iframe src="https://www.youtube.com/embed/_UX6ex5VXV4" title="Método iterativo de Punto Fijo" loading="lazy" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+    </div>
+    <p class="video-credit">Método iterativo de Punto Fijo — YouTube. <a href="https://www.youtube.com/watch?v=_UX6ex5VXV4" target="_blank" rel="noopener">Ver en YouTube ↗</a></p>
+  </div>
+</div>
+
+<div class="doc-layout">
+<nav class="toc" aria-label="Contenido de la página">
+  <p class="toc-label">En esta página</p>
+  <ol>
+        <li><a href="#formulacion">Formulación del problema</a></li>
+        <li><a href="#condicion">Condición de convergencia</a></li>
+        <li><a href="#algoritmo">El algoritmo</a></li>
+        <li><a href="#ejemplo">Un mismo problema, dos reordenamientos</a></li>
+  </ol>
+</nav>
+<article class="content">
+
+    <h2 id="formulacion">Formulación del problema</h2>
+    <p>Dada una ecuación f(x) = 0, se reescribe algebraicamente en la forma x = g(x). Resolver esta nueva ecuación equivale a encontrar un <strong>punto fijo</strong> de g: un valor x* tal que g(x*) = x*. A partir de una aproximación inicial x₀, se genera la sucesión:</p>
+    <div class="formula-block">x<sub>n+1</sub> = g(x<sub>n</sub>)</div>
+
+    <h2 id="condicion">Condición de convergencia</h2>
+    <p>El teorema del punto fijo establece que si g es continua y derivable en un intervalo que contiene a x*, y si |g'(x)| &lt; 1 en ese intervalo, entonces la iteración converge a x* para cualquier x₀ suficientemente cercano. Si |g'(x*)| &gt; 1, la sucesión se aleja de la raíz en lugar de acercarse.</p>
+    <p>Esto tiene una consecuencia importante: una misma ecuación f(x) = 0 puede reescribirse de varias formas g(x) distintas, y no todas convergen. La elección del reordenamiento algebraico no es un detalle menor.</p>
+
+    <h2 id="algoritmo">El algoritmo</h2>
+    <ol class="decimal">
+      <li>Despejar x = g(x) a partir de f(x) = 0.</li>
+      <li>Elegir una aproximación inicial x₀.</li>
+      <li>Calcular x<sub>n+1</sub> = g(x<sub>n</sub>).</li>
+      <li>Verificar el criterio de parada, por ejemplo |x<sub>n+1</sub> − x<sub>n</sub>| &lt; tol.</li>
+      <li>Si no se cumple, repetir desde el paso 3.</li>
+    </ol>
+
+    <h2 id="ejemplo">Un mismo problema, dos reordenamientos</h2>
+    <p>Para f(x) = x² − x − 2 = 0 (raíz real x = 2), una posible reescritura es g(x) = √(x + 2). Cerca de x = 2, g'(x) = 1 / (2√(x+2)) ≈ 0.25, así que |g'(x)| &lt; 1 y la iteración converge. Otra reescritura igualmente válida algebraicamente, g(x) = x² − 2, tiene g'(2) = 4, de modo que |g'(x)| &gt; 1 y la misma idea diverge.</p>
+
+    <div class="callout">
+      <p class="label">Idea clave</p>
+      <p>La elección de g determina si el método converge y qué tan rápido lo hace; no toda reorganización algebraica de f(x) = 0 sirve como fórmula iterativa.</p>
+    </div>
+
+</article>
+</div>
+
+<nav class="page-nav">
+  <a href="../metodo-biseccion/index.html"><span class="dir">← Tema anterior</span><span class="ttl">El algoritmo de bisección</span></a>
+  <a class="next" href="../metodo-newton/index.html"><span class="dir">Tema siguiente →</span><span class="ttl">Método de Newton</span></a>
+</nav>
+
+<footer class="site-footer">
+  <div class="footer-inner">
+    <p class="fmeta">Métodos Numéricos — Facultad de Ingeniería de Sistemas, 7.º semestre<br>Fundación Universitaria Claretiana (Uniclaretiana) · Docente: Nancy González Ramírez</p>
+    <nav>
+      <a href="../index.html">Inicio</a>
+      <a href="../recursos/index.html">Recursos</a><a href="../contacto/index.html">Contacto</a>
+      <a href="../acerca-de/index.html">Acerca de</a>
+    </nav>
+  </div>
+</footer>
+<script src="../assets/js/main.js?v=4"></script>
+</body>
+</html>

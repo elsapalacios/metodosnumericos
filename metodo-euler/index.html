@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>El método de Euler · Métodos Numéricos</title>
+<meta name="description" content="La forma más simple de aproximar, paso a paso, la solución de un problema de valor inicial.">
+
+<meta name="color-scheme" content="light dark">
+<script>(function(){try{var t=localStorage.getItem('mn-theme');if(!t){t=window.matchMedia&&matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light';}document.documentElement.setAttribute('data-theme',t);}catch(e){}})();</script>
+<link rel="stylesheet" href="../assets/css/styles.css?v=4">
+</head>
+<body data-unit="3">
+<header class="site-header">
+  <div class="header-inner">
+    <a class="brand" href="../index.html"><span class="brand-mark" aria-hidden="true"><svg viewBox="0 0 40 40" focusable="false"><defs><linearGradient id="bmg" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#4B66F0"/><stop offset="1" stop-color="#7A3DCF"/></linearGradient></defs><rect width="40" height="40" rx="11" fill="url(#bmg)"/><path d="M9 30 C 16 30, 20 14, 31 12" fill="none" stroke="#fff" stroke-width="2.6" stroke-linecap="round"/><circle cx="31" cy="12" r="3.3" fill="#FF7B47"/></svg></span><span class="brand-text"><strong>Métodos Numéricos</strong><span>Introducción y Teoría de errores</span></span></a>
+    <button class="nav-toggle" aria-expanded="false" aria-label="Abrir menú">Menú ≡</button>
+    <nav class="main-nav">
+      <a href="../proposito/index.html" class="">Propósito</a>
+      <div class="nav-dropdown">
+        <button type="button" class="nav-dropdown-toggle active" aria-expanded="false" aria-haspopup="true">Temas <span class="caret">&#9662;</span></button>
+        <div class="nav-dropdown-panel">
+          <div class="nav-group">
+            <p class="nav-group-title">Unidad 1 — Introducción y teoría de errores</p>
+            <a href="../introduccion/index.html" class=""><span class="num">01</span>Introducción</a>
+            <a href="../representacion-numeros/index.html" class=""><span class="num">02</span>Representación</a>
+            <a href="../aritmetica-punto-flotante/index.html" class=""><span class="num">03</span>Aritmética</a>
+            <a href="../errores-redondeo/index.html" class=""><span class="num">04</span>Errores</a>
+            <a href="../algoritmos-convergencia/index.html" class=""><span class="num">05</span>Algoritmos</a>
+            <a href="../python-metodos-numericos/index.html" class=""><span class="num">06</span>Python</a>
+          </div>
+          <div class="nav-group">
+            <p class="nav-group-title">Unidad 2 — Solución de ecuaciones no lineales</p>
+            <a href="../tasas-convergencia/index.html" class=""><span class="num">07</span>Tasas de convergencia</a>
+            <a href="../metodo-biseccion/index.html" class=""><span class="num">08</span>Bisección</a>
+            <a href="../metodo-punto-fijo/index.html" class=""><span class="num">09</span>Punto fijo</a>
+            <a href="../metodo-newton/index.html" class=""><span class="num">10</span>Newton</a>
+          </div>
+          <div class="nav-group">
+            <p class="nav-group-title">Unidad 3 — Ecuaciones diferenciales ordinarias</p>
+            <a href="../metodo-euler/index.html" class="active"><span class="num">11</span>Euler</a>
+            <a href="../metodo-taylor/index.html" class=""><span class="num">12</span>Taylor</a>
+            <a href="../metodo-runge-kutta/index.html" class=""><span class="num">13</span>Runge-Kutta</a>
+            <a href="../metodos-multipaso/index.html" class=""><span class="num">14</span>Métodos multipaso</a>
+          </div>
+        </div>
+      </div>
+      <a href="../juegos/index.html" class="">Juegos</a>
+      <a href="../recursos/index.html" class="">Recursos</a>
+      <a href="../contacto/index.html" class="">Contacto</a>
+      <a href="../acerca-de/index.html" class="">Acerca de</a>
+    </nav>
+  <button class="theme-toggle" type="button" aria-label="Cambiar entre tema claro y oscuro" title="Cambiar tema"><svg class="i-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/></svg><svg class="i-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></svg></button>
+  </div>
+</header>
+
+<div class="page-head">
+  <p class="kicker">Tema 11 — Ecuaciones diferenciales ordinarias</p>
+  <h1>El método de Euler</h1>
+  <p class="dek">La forma más simple de aproximar, paso a paso, la solución de un problema de valor inicial.</p>
+</div>
+
+<div class="topic-photo">
+  <figure>
+    <img src="https://commons.wikimedia.org/wiki/Special:FilePath/Leonhard_Euler.jpg?width=900" alt="Retrato de Leonhard Euler, pintado por Jakob Emanuel Handmann en 1753" loading="lazy">
+    <figcaption>
+      <span>Leonhard Euler (1707-1783), quien propuso el método más simple para aproximar soluciones de EDO</span>
+      <a href="https://commons.wikimedia.org/wiki/File:Leonhard_Euler.jpg" target="_blank" rel="noopener">Wikimedia Commons ↗</a>
+    </figcaption>
+  </figure>
+</div>
+
+
+<div class="media-grid">
+  <figure class="topic-figure">
+    <svg viewBox="0 0 320 190" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Curva de la solución real junto con los escalones rectos con los que el método de Euler la aproxima">
+      <path d="M30 150 C 90 60, 190 40, 290 30" fill="none" stroke="var(--ink-soft)" stroke-width="1.6" stroke-dasharray="4 3"/>
+      <text x="270" y="22" font-family="IBM Plex Mono, monospace" font-size="9" fill="var(--ink-soft)">solución real</text>
+      <polyline points="30,150 90,150 90,108 150,108 150,80 210,80 210,60 270,60" fill="none" stroke="var(--brass-deep)" stroke-width="2.2"/>
+      <circle cx="30" cy="150" r="3" fill="var(--brass-deep)"/>
+      <circle cx="90" cy="108" r="3" fill="var(--brass-deep)"/>
+      <circle cx="150" cy="80" r="3" fill="var(--brass-deep)"/>
+      <circle cx="210" cy="60" r="3" fill="var(--brass-deep)"/>
+      <text x="60" y="168" text-anchor="middle" font-family="IBM Plex Mono, monospace" font-size="9" fill="var(--ink)">h</text>
+      <text x="120" y="168" text-anchor="middle" font-family="IBM Plex Mono, monospace" font-size="9" fill="var(--ink)">h</text>
+      <text x="180" y="168" text-anchor="middle" font-family="IBM Plex Mono, monospace" font-size="9" fill="var(--ink)">h</text>
+    </svg>
+    <figcaption>Los escalones rectos aproximan la curva real de la solución, paso a paso.</figcaption>
+  </figure>
+  <div class="video-card">
+    <p class="video-intro">¿Prefieres no leer? Mira este video sobre el tema:</p>
+    <div class="video-wrap">
+      <iframe src="https://www.youtube.com/embed/xq8OOYGniis" title="Ejemplo del método de Euler para un PVI de EDO de orden 1" loading="lazy" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+    </div>
+    <p class="video-credit">Ejemplo del método de Euler para un PVI de EDO de orden 1 — Universitat Politècnica de València (UPV). <a href="https://www.youtube.com/watch?v=xq8OOYGniis" target="_blank" rel="noopener">Ver en YouTube ↗</a></p>
+  </div>
+</div>
+
+<div class="doc-layout">
+<nav class="toc" aria-label="Contenido de la página">
+  <p class="toc-label">En esta página</p>
+  <ol>
+        <li><a href="#pvi">Problemas de valor inicial</a></li>
+        <li><a href="#formula">Fórmula de Euler</a></li>
+        <li><a href="#error">Error de truncamiento</a></li>
+        <li><a href="#ejemplo">Ejemplo en Python</a></li>
+  </ol>
+</nav>
+<article class="content">
+
+    <h2 id="pvi">Problemas de valor inicial</h2>
+    <p>Un problema de valor inicial (PVI) tiene la forma y' = f(x, y), con y(x₀) = y₀. Muchas ecuaciones diferenciales de este tipo no tienen solución analítica cerrada, así que se aproxima la solución en una malla de puntos x₀, x₁ = x₀ + h, x₂ = x₀ + 2h, …, separados por un paso h.</p>
+
+    <h2 id="formula">Fórmula de Euler</h2>
+    <p>El método de Euler usa la pendiente de la solución en el punto actual —dada directamente por f(x<sub>n</sub>, y<sub>n</sub>)— para avanzar linealmente hasta el siguiente punto:</p>
+    <div class="formula-block">y<sub>n+1</sub> = y<sub>n</sub> + h · f(x<sub>n</sub>, y<sub>n</sub>)</div>
+    <p>Geométricamente, equivale a seguir la recta tangente a la solución en x<sub>n</sub> durante un paso de longitud h, en lugar de seguir la curva real.</p>
+
+    <h2 id="error">Error de truncamiento</h2>
+    <p>Al usar solo el primer término de la serie de Taylor, cada paso introduce un error local del orden O(h²). Acumulado a lo largo de todos los pasos necesarios para cubrir un intervalo, el error global resulta ser de orden O(h): reducir h a la mitad reduce aproximadamente a la mitad el error total, pero duplica el número de pasos (y por tanto el costo).</p>
+
+    <h2 id="ejemplo">Ejemplo en Python</h2>
+    <p>Para y' = y, y(0) = 1 (cuya solución exacta es y = eˣ), el método de Euler se implementa así:</p>
+    <pre class="code"><span class="k">def</span> euler(f, x0, y0, h, n_pasos):
+    x, y = x0, y0
+    <span class="k">for</span> _ <span class="k">in</span> range(n_pasos):
+        y = y + h * f(x, y)
+        x = x + h
+    <span class="k">return</span> x, y
+
+f = <span class="k">lambda</span> x, y: y
+x_final, y_aprox = euler(f, <span class="n">0</span>, <span class="n">1</span>, <span class="n">0.1</span>, <span class="n">10</span>)
+print(<span class="s">'y aproximado en x=1:'</span>, y_aprox)
+<span class="c"># Comparar con el valor exacto: e**1</span></pre>
+
+    <div class="callout">
+      <p class="label">Idea clave</p>
+      <p>Euler es el punto de partida conceptual de todos los métodos siguientes: Taylor y Runge-Kutta persiguen la misma idea —avanzar usando la pendiente de la solución— pero de forma más precisa por paso.</p>
+    </div>
+
+</article>
+</div>
+
+<nav class="page-nav">
+  <a href="../metodo-newton/index.html"><span class="dir">← Tema anterior</span><span class="ttl">Método de Newton</span></a>
+  <a class="next" href="../metodo-taylor/index.html"><span class="dir">Tema siguiente →</span><span class="ttl">Método de Taylor</span></a>
+</nav>
+
+<footer class="site-footer">
+  <div class="footer-inner">
+    <p class="fmeta">Métodos Numéricos — Facultad de Ingeniería de Sistemas, 7.º semestre<br>Fundación Universitaria Claretiana (Uniclaretiana) · Docente: Nancy González Ramírez</p>
+    <nav>
+      <a href="../index.html">Inicio</a>
+      <a href="../recursos/index.html">Recursos</a><a href="../contacto/index.html">Contacto</a>
+      <a href="../acerca-de/index.html">Acerca de</a>
+    </nav>
+  </div>
+</footer>
+<script src="../assets/js/main.js?v=4"></script>
+</body>
+</html>

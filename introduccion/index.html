@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>¿Qué es un método numérico? · Métodos Numéricos</title>
+<meta name="description" content="Definición, características y por qué son necesarios los métodos numéricos.">
+
+<meta name="color-scheme" content="light dark">
+<script>(function(){try{var t=localStorage.getItem('mn-theme');if(!t){t=window.matchMedia&&matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light';}document.documentElement.setAttribute('data-theme',t);}catch(e){}})();</script>
+<link rel="stylesheet" href="../assets/css/styles.css?v=4">
+</head>
+<body data-unit="1">
+<header class="site-header">
+  <div class="header-inner">
+    <a class="brand" href="../index.html"><span class="brand-mark" aria-hidden="true"><svg viewBox="0 0 40 40" focusable="false"><defs><linearGradient id="bmg" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#4B66F0"/><stop offset="1" stop-color="#7A3DCF"/></linearGradient></defs><rect width="40" height="40" rx="11" fill="url(#bmg)"/><path d="M9 30 C 16 30, 20 14, 31 12" fill="none" stroke="#fff" stroke-width="2.6" stroke-linecap="round"/><circle cx="31" cy="12" r="3.3" fill="#FF7B47"/></svg></span><span class="brand-text"><strong>Métodos Numéricos</strong><span>Introducción y Teoría de errores</span></span></a>
+    <button class="nav-toggle" aria-expanded="false" aria-label="Abrir menú">Menú ≡</button>
+    <nav class="main-nav">
+      <a href="../proposito/index.html" class="">Propósito</a>
+      <div class="nav-dropdown">
+        <button type="button" class="nav-dropdown-toggle active" aria-expanded="false" aria-haspopup="true">Temas <span class="caret">&#9662;</span></button>
+        <div class="nav-dropdown-panel">
+          <div class="nav-group">
+            <p class="nav-group-title">Unidad 1 — Introducción y teoría de errores</p>
+            <a href="../introduccion/index.html" class="active"><span class="num">01</span>Introducción</a>
+            <a href="../representacion-numeros/index.html" class=""><span class="num">02</span>Representación</a>
+            <a href="../aritmetica-punto-flotante/index.html" class=""><span class="num">03</span>Aritmética</a>
+            <a href="../errores-redondeo/index.html" class=""><span class="num">04</span>Errores</a>
+            <a href="../algoritmos-convergencia/index.html" class=""><span class="num">05</span>Algoritmos</a>
+            <a href="../python-metodos-numericos/index.html" class=""><span class="num">06</span>Python</a>
+          </div>
+          <div class="nav-group">
+            <p class="nav-group-title">Unidad 2 — Solución de ecuaciones no lineales</p>
+            <a href="../tasas-convergencia/index.html" class=""><span class="num">07</span>Tasas de convergencia</a>
+            <a href="../metodo-biseccion/index.html" class=""><span class="num">08</span>Bisección</a>
+            <a href="../metodo-punto-fijo/index.html" class=""><span class="num">09</span>Punto fijo</a>
+            <a href="../metodo-newton/index.html" class=""><span class="num">10</span>Newton</a>
+          </div>
+          <div class="nav-group">
+            <p class="nav-group-title">Unidad 3 — Ecuaciones diferenciales ordinarias</p>
+            <a href="../metodo-euler/index.html" class=""><span class="num">11</span>Euler</a>
+            <a href="../metodo-taylor/index.html" class=""><span class="num">12</span>Taylor</a>
+            <a href="../metodo-runge-kutta/index.html" class=""><span class="num">13</span>Runge-Kutta</a>
+            <a href="../metodos-multipaso/index.html" class=""><span class="num">14</span>Métodos multipaso</a>
+          </div>
+        </div>
+      </div>
+      <a href="../juegos/index.html" class="">Juegos</a>
+      <a href="../recursos/index.html" class="">Recursos</a>
+      <a href="../contacto/index.html" class="">Contacto</a>
+      <a href="../acerca-de/index.html" class="">Acerca de</a>
+    </nav>
+  <button class="theme-toggle" type="button" aria-label="Cambiar entre tema claro y oscuro" title="Cambiar tema"><svg class="i-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/></svg><svg class="i-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></svg></button>
+  </div>
+</header>
+
+<div class="page-head">
+  <p class="kicker">Tema 01 — Fundamentos</p>
+  <h1>¿Qué es un método numérico?</h1>
+  <p class="dek">Definición, características y por qué son necesarios los métodos numéricos.</p>
+</div>
+
+<div class="topic-photo">
+  <figure>
+    <img src="https://commons.wikimedia.org/wiki/Special:FilePath/Leibniz_Stepped_Reckoner.png?width=900" alt="Fotografía de la Stepped Reckoner, una de las primeras calculadoras mecánicas, construida por Gottfried Leibniz" loading="lazy">
+    <figcaption>
+      <span>La Stepped Reckoner de Leibniz (1694), un antecedente mecánico de los métodos de cálculo</span>
+      <a href="https://commons.wikimedia.org/wiki/File:Leibniz_Stepped_Reckoner.png" target="_blank" rel="noopener">Wikimedia Commons ↗</a>
+    </figcaption>
+  </figure>
+</div>
+
+
+<div class="media-grid">
+  <figure class="topic-figure">
+    <svg viewBox="0 0 320 190" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Diagrama de un método iterativo: problema, algoritmo y aproximación, con una flecha de iteración">
+      <defs>
+        <marker id="a1" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto"><path d="M0,0 L6,3 L0,6 Z" fill="var(--ink)"/></marker>
+        <marker id="a2" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto"><path d="M0,0 L6,3 L0,6 Z" fill="var(--brass)"/></marker>
+      </defs>
+      <rect x="14" y="66" width="84" height="46" rx="4" fill="none" stroke="var(--ink)" stroke-width="2"/>
+      <text x="56" y="94" text-anchor="middle" font-family="IBM Plex Sans, sans-serif" font-size="12" fill="var(--ink)">Problema</text>
+      <rect x="128" y="66" width="84" height="46" rx="4" fill="none" stroke="var(--brass-deep)" stroke-width="2"/>
+      <text x="170" y="94" text-anchor="middle" font-family="IBM Plex Sans, sans-serif" font-size="12" fill="var(--ink)">Algoritmo</text>
+      <rect x="242" y="66" width="66" height="46" rx="4" fill="none" stroke="var(--ink)" stroke-width="2"/>
+      <text x="275" y="88" text-anchor="middle" font-family="IBM Plex Sans, sans-serif" font-size="11" fill="var(--ink)">Aprox.</text>
+      <text x="275" y="102" text-anchor="middle" font-family="IBM Plex Mono, monospace" font-size="10" fill="var(--brass-deep)">x_n</text>
+      <line x1="98" y1="89" x2="124" y2="89" stroke="var(--ink)" stroke-width="2" marker-end="url(#a1)"/>
+      <line x1="212" y1="89" x2="238" y2="89" stroke="var(--ink)" stroke-width="2" marker-end="url(#a1)"/>
+      <path d="M242 118 C 190 158, 140 158, 128 118" fill="none" stroke="var(--brass)" stroke-width="2" marker-end="url(#a2)"/>
+      <text x="185" y="150" text-anchor="middle" font-family="IBM Plex Mono, monospace" font-size="10" fill="var(--brass-deep)">refinar · iterar</text>
+    </svg>
+    <figcaption>Un método numérico refina una aproximación paso a paso hasta converger.</figcaption>
+  </figure>
+  <div class="video-card">
+    <p class="video-intro">¿Prefieres no leer? Mira este video sobre el tema:</p>
+    <div class="video-wrap">
+      <iframe src="https://www.youtube.com/embed/wPtd6gJFxGU" title="¿Qué son los métodos numéricos? Introducción" loading="lazy" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+    </div>
+    <p class="video-credit">¿Qué son los métodos numéricos? Introducción — YouTube. <a href="https://www.youtube.com/watch?v=wPtd6gJFxGU" target="_blank" rel="noopener">Ver en YouTube ↗</a></p>
+  </div>
+</div>
+
+<div class="doc-layout">
+<nav class="toc" aria-label="Contenido de la página">
+  <p class="toc-label">En esta página</p>
+  <ol>
+        <li><a href="#definicion">Definición</a></li>
+        <li><a href="#caracteristicas">Características principales</a></li>
+        <li><a href="#necesidad">¿Por qué son necesarios?</a></li>
+  </ol>
+</nav>
+<article class="content">
+  
+    <h2 id="definicion">Definición</h2>
+    <p>Un <strong>método numérico</strong> es un procedimiento sistemático, generalmente iterativo, que transforma un modelo matemático —una ecuación, un sistema de ecuaciones, una integral, una derivada— en una secuencia finita de operaciones aritméticas y lógicas, con el fin de obtener una solución aproximada dentro de un margen de error aceptable.</p>
+    <p>A diferencia de los métodos analíticos, que buscan una expresión exacta de la solución, los métodos numéricos buscan un valor numérico suficientemente cercano al valor real, calculable en un número finito de pasos.</p>
+
+    <h2 id="caracteristicas">Características principales</h2>
+    <ul>
+      <li>Aproximan la solución mediante procesos iterativos o de discretización.</li>
+      <li>Requieren de un criterio de convergencia y de un criterio de parada.</li>
+      <li>Generan siempre un error, cuya magnitud debe ser estimada y controlada.</li>
+      <li>Se implementan mediante algoritmos ejecutables en un computador.</li>
+      <li>Su eficiencia se mide en precisión, velocidad de convergencia y costo computacional.</li>
+    </ul>
+
+    <h2 id="necesidad">¿Por qué son necesarios?</h2>
+    <p>Muchos problemas matemáticos —resolver ecuaciones no lineales, evaluar integrales complejas, resolver sistemas de ecuaciones diferenciales o encontrar valores propios de una matriz de gran tamaño— no tienen solución analítica cerrada. Los métodos numéricos permiten obtener resultados aplicables en ingeniería, física, economía y ciencias de la computación, con una precisión que depende del método elegido y de los recursos computacionales disponibles.</p>
+
+    <div class="callout">
+      <p class="label">Ejemplo introductorio</p>
+      <p>Calcular la raíz cuadrada de 2 de forma exacta implica un número irracional con infinitas cifras decimales. Un método numérico, como el método de Newton-Raphson, permite aproximar este valor con la precisión que se necesite, deteniéndose cuando el error entre dos iteraciones sucesivas es menor que una tolerancia definida.</p>
+    </div>
+</article>
+</div>
+
+<nav class="page-nav">
+  <a href="../index.html"><span class="dir">← Volver</span><span class="ttl">Inicio</span></a>
+  <a class="next" href="../representacion-numeros/index.html"><span class="dir">Tema siguiente →</span><span class="ttl">Representación de números en el computador</span></a>
+</nav>
+
+<footer class="site-footer">
+  <div class="footer-inner">
+    <p class="fmeta">Métodos Numéricos — Facultad de Ingeniería de Sistemas, 7.º semestre<br>Fundación Universitaria Claretiana (Uniclaretiana) · Docente: Nancy González Ramírez</p>
+    <nav>
+      <a href="../index.html">Inicio</a>
+      <a href="../recursos/index.html">Recursos</a><a href="../contacto/index.html">Contacto</a>
+      <a href="../acerca-de/index.html">Acerca de</a>
+    </nav>
+  </div>
+</footer>
+<script src="../assets/js/main.js?v=4"></script>
+</body>
+</html>

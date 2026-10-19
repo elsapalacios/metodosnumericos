@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Método de Runge-Kutta · Métodos Numéricos</title>
+<meta name="description" content="Alcanza la precisión de Taylor de orden alto evaluando f varias veces por paso, sin derivarla.">
+
+<meta name="color-scheme" content="light dark">
+<script>(function(){try{var t=localStorage.getItem('mn-theme');if(!t){t=window.matchMedia&&matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light';}document.documentElement.setAttribute('data-theme',t);}catch(e){}})();</script>
+<link rel="stylesheet" href="../assets/css/styles.css?v=4">
+</head>
+<body data-unit="3">
+<header class="site-header">
+  <div class="header-inner">
+    <a class="brand" href="../index.html"><span class="brand-mark" aria-hidden="true"><svg viewBox="0 0 40 40" focusable="false"><defs><linearGradient id="bmg" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#4B66F0"/><stop offset="1" stop-color="#7A3DCF"/></linearGradient></defs><rect width="40" height="40" rx="11" fill="url(#bmg)"/><path d="M9 30 C 16 30, 20 14, 31 12" fill="none" stroke="#fff" stroke-width="2.6" stroke-linecap="round"/><circle cx="31" cy="12" r="3.3" fill="#FF7B47"/></svg></span><span class="brand-text"><strong>Métodos Numéricos</strong><span>Introducción y Teoría de errores</span></span></a>
+    <button class="nav-toggle" aria-expanded="false" aria-label="Abrir menú">Menú ≡</button>
+    <nav class="main-nav">
+      <a href="../proposito/index.html" class="">Propósito</a>
+      <div class="nav-dropdown">
+        <button type="button" class="nav-dropdown-toggle active" aria-expanded="false" aria-haspopup="true">Temas <span class="caret">&#9662;</span></button>
+        <div class="nav-dropdown-panel">
+          <div class="nav-group">
+            <p class="nav-group-title">Unidad 1 — Introducción y teoría de errores</p>
+            <a href="../introduccion/index.html" class=""><span class="num">01</span>Introducción</a>
+            <a href="../representacion-numeros/index.html" class=""><span class="num">02</span>Representación</a>
+            <a href="../aritmetica-punto-flotante/index.html" class=""><span class="num">03</span>Aritmética</a>
+            <a href="../errores-redondeo/index.html" class=""><span class="num">04</span>Errores</a>
+            <a href="../algoritmos-convergencia/index.html" class=""><span class="num">05</span>Algoritmos</a>
+            <a href="../python-metodos-numericos/index.html" class=""><span class="num">06</span>Python</a>
+          </div>
+          <div class="nav-group">
+            <p class="nav-group-title">Unidad 2 — Solución de ecuaciones no lineales</p>
+            <a href="../tasas-convergencia/index.html" class=""><span class="num">07</span>Tasas de convergencia</a>
+            <a href="../metodo-biseccion/index.html" class=""><span class="num">08</span>Bisección</a>
+            <a href="../metodo-punto-fijo/index.html" class=""><span class="num">09</span>Punto fijo</a>
+            <a href="../metodo-newton/index.html" class=""><span class="num">10</span>Newton</a>
+          </div>
+          <div class="nav-group">
+            <p class="nav-group-title">Unidad 3 — Ecuaciones diferenciales ordinarias</p>
+            <a href="../metodo-euler/index.html" class=""><span class="num">11</span>Euler</a>
+            <a href="../metodo-taylor/index.html" class=""><span class="num">12</span>Taylor</a>
+            <a href="../metodo-runge-kutta/index.html" class="active"><span class="num">13</span>Runge-Kutta</a>
+            <a href="../metodos-multipaso/index.html" class=""><span class="num">14</span>Métodos multipaso</a>
+          </div>
+        </div>
+      </div>
+      <a href="../juegos/index.html" class="">Juegos</a>
+      <a href="../recursos/index.html" class="">Recursos</a>
+      <a href="../contacto/index.html" class="">Contacto</a>
+      <a href="../acerca-de/index.html" class="">Acerca de</a>
+    </nav>
+  <button class="theme-toggle" type="button" aria-label="Cambiar entre tema claro y oscuro" title="Cambiar tema"><svg class="i-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/></svg><svg class="i-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></svg></button>
+  </div>
+</header>
+
+<div class="page-head">
+  <p class="kicker">Tema 13 — Ecuaciones diferenciales ordinarias</p>
+  <h1>Método de Runge-Kutta</h1>
+  <p class="dek">Alcanza la precisión de Taylor de orden alto evaluando f varias veces por paso, sin derivarla.</p>
+</div>
+
+<div class="topic-photo">
+  <figure>
+    <img src="https://commons.wikimedia.org/wiki/Special:FilePath/Ariane4.jpg?width=900" alt="Fotografía del despegue de un cohete Ariane 4, cuya trayectoria se calcula resolviendo ecuaciones diferenciales" loading="lazy">
+    <figcaption>
+      <span>Trayectorias como la de un cohete se calculan integrando ecuaciones diferenciales, el terreno de Runge-Kutta</span>
+      <a href="https://commons.wikimedia.org/wiki/File:Ariane4.jpg" target="_blank" rel="noopener">Wikimedia Commons / NASA ↗</a>
+    </figcaption>
+  </figure>
+</div>
+
+
+<div class="media-grid">
+  <figure class="topic-figure">
+    <svg viewBox="0 0 320 190" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Cuatro estimaciones de pendiente dentro de un paso, k1 a k4, combinadas en una única pendiente promedio">
+      <line x1="30" y1="160" x2="300" y2="160" stroke="var(--ink)" stroke-width="1.5"/>
+      <circle cx="50" cy="160" r="3.5" fill="var(--ink)"/>
+      <circle cx="270" cy="120" r="3.5" fill="var(--ink)"/>
+      <text x="50" y="175" text-anchor="middle" font-family="IBM Plex Mono, monospace" font-size="9" fill="var(--ink)">xₙ</text>
+      <text x="270" y="135" text-anchor="middle" font-family="IBM Plex Mono, monospace" font-size="9" fill="var(--ink)">xₙ+h</text>
+      <line x1="50" y1="160" x2="95" y2="132" stroke="var(--ink-soft)" stroke-width="1.6"/>
+      <text x="98" y="128" font-family="IBM Plex Mono, monospace" font-size="9" fill="var(--ink-soft)">k1</text>
+      <line x1="120" y1="150" x2="165" y2="112" stroke="var(--brass-deep)" stroke-width="1.6"/>
+      <text x="168" y="108" font-family="IBM Plex Mono, monospace" font-size="9" fill="var(--brass-deep)">k2</text>
+      <line x1="120" y1="150" x2="165" y2="118" stroke="var(--brass)" stroke-width="1.6"/>
+      <text x="150" y="140" font-family="IBM Plex Mono, monospace" font-size="9" fill="var(--brass)">k3</text>
+      <line x1="205" y1="132" x2="250" y2="98" stroke="var(--ink-soft)" stroke-width="1.6"/>
+      <text x="252" y="94" font-family="IBM Plex Mono, monospace" font-size="9" fill="var(--ink-soft)">k4</text>
+      <line x1="50" y1="160" x2="270" y2="120" stroke="var(--crimson)" stroke-width="2.4"/>
+      <text x="150" y="175" text-anchor="middle" font-family="IBM Plex Mono, monospace" font-size="9" fill="var(--crimson)">promedio ponderado</text>
+    </svg>
+    <figcaption>Cuatro pendientes intermedias se combinan en una sola pendiente promedio.</figcaption>
+  </figure>
+  <div class="video-card">
+    <p class="video-intro">¿Prefieres no leer? Mira este video sobre el tema:</p>
+    <div class="video-wrap">
+      <iframe src="https://www.youtube.com/embed/oSLAg_zpr_g" title="RK4 — Método de Runge-Kutta de cuarto orden" loading="lazy" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+    </div>
+    <p class="video-credit">RK4 — Método de Runge-Kutta de cuarto orden — YouTube. <a href="https://www.youtube.com/watch?v=oSLAg_zpr_g" target="_blank" rel="noopener">Ver en YouTube ↗</a></p>
+  </div>
+</div>
+
+<div class="doc-layout">
+<nav class="toc" aria-label="Contenido de la página">
+  <p class="toc-label">En esta página</p>
+  <ol>
+        <li><a href="#idea">La idea detrás del método</a></li>
+        <li><a href="#rk4">Runge-Kutta de cuarto orden (RK4)</a></li>
+        <li><a href="#balance">Ventajas y desventajas</a></li>
+  </ol>
+</nav>
+<article class="content">
+
+    <h2 id="idea">La idea detrás del método</h2>
+    <p>Los métodos de Runge-Kutta buscan el mismo objetivo que Taylor de orden alto —un error pequeño por paso— pero sin derivar f explícitamente. En su lugar, evalúan f varias veces en puntos intermedios dentro de cada paso y combinan esas evaluaciones con pesos cuidadosamente elegidos, de modo que el resultado coincide con la expansión de Taylor hasta el orden deseado.</p>
+
+    <h2 id="rk4">Runge-Kutta de cuarto orden (RK4)</h2>
+    <p>La variante más usada en la práctica es RK4, que combina cuatro evaluaciones de f por paso:</p>
+    <div class="formula-block">
+      k₁ = f(x<sub>n</sub>, y<sub>n</sub>)<br>
+      k₂ = f(x<sub>n</sub> + h/2, y<sub>n</sub> + (h/2)k₁)<br>
+      k₃ = f(x<sub>n</sub> + h/2, y<sub>n</sub> + (h/2)k₂)<br>
+      k₄ = f(x<sub>n</sub> + h, y<sub>n</sub> + h·k₃)<br>
+      y<sub>n+1</sub> = y<sub>n</sub> + (h/6)(k₁ + 2k₂ + 2k₃ + k₄)
+    </div>
+    <p>k₁ es la pendiente al inicio del paso, k₂ y k₃ son estimaciones de la pendiente en el punto medio (usando la información de k₁ y k₂ respectivamente), y k₄ es la pendiente al final del paso. El promedio ponderado de las cuatro produce un error local de O(h⁵) y global de O(h⁴).</p>
+    <pre class="code"><span class="k">def</span> rk4_paso(f, x, y, h):
+    k1 = f(x, y)
+    k2 = f(x + h/<span class="n">2</span>, y + h/<span class="n">2</span>*k1)
+    k3 = f(x + h/<span class="n">2</span>, y + h/<span class="n">2</span>*k2)
+    k4 = f(x + h, y + h*k3)
+    <span class="k">return</span> y + (h/<span class="n">6</span>)*(k1 + <span class="n">2</span>*k2 + <span class="n">2</span>*k3 + k4)</pre>
+
+    <h2 id="balance">Ventajas y desventajas</h2>
+    <ul>
+      <li><strong>A favor:</strong> alta precisión sin necesidad de derivar f; es el método de un paso usado por defecto en gran parte del software científico (por ejemplo, las variantes que emplea <code>scipy.integrate.solve_ivp</code>).</li>
+      <li><strong>En contra:</strong> cada paso requiere varias evaluaciones de f (cuatro en RK4), lo que lo hace más costoso por paso que Euler; y, aun así, sigue siendo un método de un solo paso, que no reutiliza el trabajo de pasos anteriores.</li>
+    </ul>
+
+    <div class="callout">
+      <p class="label">Idea clave</p>
+      <p>Runge-Kutta logra el mismo objetivo que Taylor —reducir el error por paso— sustituyendo derivadas analíticas por evaluaciones adicionales de la propia función f, que es mucho más fácil de programar.</p>
+    </div>
+
+</article>
+</div>
+
+<nav class="page-nav">
+  <a href="../metodo-taylor/index.html"><span class="dir">← Tema anterior</span><span class="ttl">Método de Taylor</span></a>
+  <a class="next" href="../metodos-multipaso/index.html"><span class="dir">Tema siguiente →</span><span class="ttl">Métodos multipaso</span></a>
+</nav>
+
+<footer class="site-footer">
+  <div class="footer-inner">
+    <p class="fmeta">Métodos Numéricos — Facultad de Ingeniería de Sistemas, 7.º semestre<br>Fundación Universitaria Claretiana (Uniclaretiana) · Docente: Nancy González Ramírez</p>
+    <nav>
+      <a href="../index.html">Inicio</a>
+      <a href="../recursos/index.html">Recursos</a><a href="../contacto/index.html">Contacto</a>
+      <a href="../acerca-de/index.html">Acerca de</a>
+    </nav>
+  </div>
+</footer>
+<script src="../assets/js/main.js?v=4"></script>
+</body>
+</html>

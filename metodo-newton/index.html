@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Método de Newton · Métodos Numéricos</title>
+<meta name="description" content="Usa la recta tangente a f para converger de forma cuadrática hacia la raíz.">
+
+<meta name="color-scheme" content="light dark">
+<script>(function(){try{var t=localStorage.getItem('mn-theme');if(!t){t=window.matchMedia&&matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light';}document.documentElement.setAttribute('data-theme',t);}catch(e){}})();</script>
+<link rel="stylesheet" href="../assets/css/styles.css?v=4">
+</head>
+<body data-unit="2">
+<header class="site-header">
+  <div class="header-inner">
+    <a class="brand" href="../index.html"><span class="brand-mark" aria-hidden="true"><svg viewBox="0 0 40 40" focusable="false"><defs><linearGradient id="bmg" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#4B66F0"/><stop offset="1" stop-color="#7A3DCF"/></linearGradient></defs><rect width="40" height="40" rx="11" fill="url(#bmg)"/><path d="M9 30 C 16 30, 20 14, 31 12" fill="none" stroke="#fff" stroke-width="2.6" stroke-linecap="round"/><circle cx="31" cy="12" r="3.3" fill="#FF7B47"/></svg></span><span class="brand-text"><strong>Métodos Numéricos</strong><span>Introducción y Teoría de errores</span></span></a>
+    <button class="nav-toggle" aria-expanded="false" aria-label="Abrir menú">Menú ≡</button>
+    <nav class="main-nav">
+      <a href="../proposito/index.html" class="">Propósito</a>
+      <div class="nav-dropdown">
+        <button type="button" class="nav-dropdown-toggle active" aria-expanded="false" aria-haspopup="true">Temas <span class="caret">&#9662;</span></button>
+        <div class="nav-dropdown-panel">
+          <div class="nav-group">
+            <p class="nav-group-title">Unidad 1 — Introducción y teoría de errores</p>
+            <a href="../introduccion/index.html" class=""><span class="num">01</span>Introducción</a>
+            <a href="../representacion-numeros/index.html" class=""><span class="num">02</span>Representación</a>
+            <a href="../aritmetica-punto-flotante/index.html" class=""><span class="num">03</span>Aritmética</a>
+            <a href="../errores-redondeo/index.html" class=""><span class="num">04</span>Errores</a>
+            <a href="../algoritmos-convergencia/index.html" class=""><span class="num">05</span>Algoritmos</a>
+            <a href="../python-metodos-numericos/index.html" class=""><span class="num">06</span>Python</a>
+          </div>
+          <div class="nav-group">
+            <p class="nav-group-title">Unidad 2 — Solución de ecuaciones no lineales</p>
+            <a href="../tasas-convergencia/index.html" class=""><span class="num">07</span>Tasas de convergencia</a>
+            <a href="../metodo-biseccion/index.html" class=""><span class="num">08</span>Bisección</a>
+            <a href="../metodo-punto-fijo/index.html" class=""><span class="num">09</span>Punto fijo</a>
+            <a href="../metodo-newton/index.html" class="active"><span class="num">10</span>Newton</a>
+          </div>
+          <div class="nav-group">
+            <p class="nav-group-title">Unidad 3 — Ecuaciones diferenciales ordinarias</p>
+            <a href="../metodo-euler/index.html" class=""><span class="num">11</span>Euler</a>
+            <a href="../metodo-taylor/index.html" class=""><span class="num">12</span>Taylor</a>
+            <a href="../metodo-runge-kutta/index.html" class=""><span class="num">13</span>Runge-Kutta</a>
+            <a href="../metodos-multipaso/index.html" class=""><span class="num">14</span>Métodos multipaso</a>
+          </div>
+        </div>
+      </div>
+      <a href="../juegos/index.html" class="">Juegos</a>
+      <a href="../recursos/index.html" class="">Recursos</a>
+      <a href="../contacto/index.html" class="">Contacto</a>
+      <a href="../acerca-de/index.html" class="">Acerca de</a>
+    </nav>
+  <button class="theme-toggle" type="button" aria-label="Cambiar entre tema claro y oscuro" title="Cambiar tema"><svg class="i-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/></svg><svg class="i-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></svg></button>
+  </div>
+</header>
+
+<div class="page-head">
+  <p class="kicker">Tema 10 — Solución de ecuaciones no lineales</p>
+  <h1>Método de Newton</h1>
+  <p class="dek">Usa la recta tangente a f para converger de forma cuadrática hacia la raíz.</p>
+</div>
+
+<div class="topic-photo">
+  <figure>
+    <img src="https://commons.wikimedia.org/wiki/Special:FilePath/GodfreyKneller-IsaacNewton-1689.jpg?width=900" alt="Retrato de Isaac Newton, pintado por Godfrey Kneller en 1689" loading="lazy">
+    <figcaption>
+      <span>Isaac Newton (1642-1727), cuyo método de la tangente da nombre a este algoritmo</span>
+      <a href="https://commons.wikimedia.org/wiki/File:GodfreyKneller-IsaacNewton-1689.jpg" target="_blank" rel="noopener">Wikimedia Commons ↗</a>
+    </figcaption>
+  </figure>
+</div>
+
+
+<div class="media-grid">
+  <figure class="topic-figure">
+    <svg viewBox="0 0 320 190" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Curva de una función con la recta tangente en un punto, mostrando cómo el método de Newton avanza hacia la raíz">
+      <line x1="20" y1="140" x2="300" y2="140" stroke="var(--ink)" stroke-width="1.5"/>
+      <path d="M40 40 C 100 40, 140 120, 230 130" fill="none" stroke="var(--ink)" stroke-width="2"/>
+      <circle cx="180" cy="70" r="4" fill="var(--brass-deep)"/>
+      <line x1="180" y1="140" x2="180" y2="70" stroke="var(--line)" stroke-width="1" stroke-dasharray="2 2"/>
+      <text x="180" y="155" text-anchor="middle" font-family="IBM Plex Mono, monospace" font-size="10" fill="var(--ink)">xₙ</text>
+      <line x1="270" y1="15" x2="95" y2="140" stroke="var(--crimson)" stroke-width="2"/>
+      <text x="245" y="30" font-family="IBM Plex Mono, monospace" font-size="10" fill="var(--crimson)">tangente</text>
+      <circle cx="95" cy="140" r="4" fill="var(--crimson)"/>
+      <text x="95" y="155" text-anchor="middle" font-family="IBM Plex Mono, monospace" font-size="10" fill="var(--crimson)">xₙ₊₁</text>
+    </svg>
+    <figcaption>La recta tangente en xₙ cruza el eje x y da la siguiente aproximación.</figcaption>
+  </figure>
+  <div class="video-card">
+    <p class="video-intro">¿Prefieres no leer? Mira este video sobre el tema:</p>
+    <div class="video-wrap">
+      <iframe src="https://www.youtube.com/embed/3C2MHKVVpwI" title="Método de Newton-Raphson" loading="lazy" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+    </div>
+    <p class="video-credit">Método de Newton-Raphson — Universitat Politècnica de València (UPV). <a href="https://www.youtube.com/watch?v=3C2MHKVVpwI" target="_blank" rel="noopener">Ver en YouTube ↗</a></p>
+  </div>
+</div>
+
+<div class="doc-layout">
+<nav class="toc" aria-label="Contenido de la página">
+  <p class="toc-label">En esta página</p>
+  <ol>
+        <li><a href="#formula">Fórmula de iteración</a></li>
+        <li><a href="#geometria">Interpretación geométrica</a></li>
+        <li><a href="#convergencia">Convergencia cuadrática</a></li>
+        <li><a href="#limitaciones">Limitaciones</a></li>
+  </ol>
+</nav>
+<article class="content">
+
+    <h2 id="formula">Fórmula de iteración</h2>
+    <p>El método de Newton-Raphson parte de una aproximación x<sub>n</sub> y genera la siguiente mediante:</p>
+    <div class="formula-block">x<sub>n+1</sub> = x<sub>n</sub> − f(x<sub>n</sub>) / f'(x<sub>n</sub>)</div>
+    <p>La fórmula surge de truncar la serie de Taylor de f alrededor de x<sub>n</sub> en el término lineal e igualar el resultado a cero.</p>
+
+    <h2 id="geometria">Interpretación geométrica</h2>
+    <p>En cada paso, la curva de f se reemplaza por su recta tangente en el punto (x<sub>n</sub>, f(x<sub>n</sub>)). La siguiente aproximación x<sub>n+1</sub> es el punto donde esa tangente cruza el eje x. Si f es razonablemente suave cerca de la raíz, esta recta es una buena aproximación local y el cruce cae cerca de x*.</p>
+
+    <h2 id="convergencia">Convergencia cuadrática</h2>
+    <p>Cerca de una raíz simple (donde f'(x*) ≠ 0), Newton converge de forma <strong>cuadrática</strong>: e<sub>n+1</sub> ≈ C · e<sub>n</sub>², lo que en la práctica significa que el número de cifras correctas se duplica aproximadamente en cada iteración. Es, con diferencia, más rápido que bisección o punto fijo cuando estas condiciones se cumplen.</p>
+
+    <h2 id="limitaciones">Limitaciones</h2>
+    <ul>
+      <li>Requiere calcular f'(x), lo cual no siempre es posible o práctico de forma analítica.</li>
+      <li>Si f'(x<sub>n</sub>) es cercana a cero, la tangente es casi horizontal y el siguiente punto puede alejarse mucho de la raíz, o el método puede fallar por división entre un número muy pequeño.</li>
+      <li>Una aproximación inicial alejada de x* puede llevar a oscilaciones o divergencia, especialmente cerca de puntos de inflexión.</li>
+      <li>En raíces de multiplicidad mayor a uno, la convergencia deja de ser cuadrática y se degrada a lineal.</li>
+    </ul>
+    <p>Cuando no se dispone de f'(x) de forma explícita, una alternativa es el <strong>método de la secante</strong>, que aproxima la derivada usando dos puntos anteriores y logra convergencia superlineal sin necesitar la fórmula de f'.</p>
+
+    <div class="callout">
+      <p class="label">Idea clave</p>
+      <p>La velocidad de Newton es su gran fortaleza, pero depende por completo de partir razonablemente cerca de la raíz y de que la derivada no se anule en el camino.</p>
+    </div>
+
+</article>
+</div>
+
+<nav class="page-nav">
+  <a href="../metodo-punto-fijo/index.html"><span class="dir">← Tema anterior</span><span class="ttl">Método de iteración de punto fijo</span></a>
+  <a class="next" href="../metodo-euler/index.html"><span class="dir">Tema siguiente →</span><span class="ttl">El método de Euler</span></a>
+</nav>
+
+<footer class="site-footer">
+  <div class="footer-inner">
+    <p class="fmeta">Métodos Numéricos — Facultad de Ingeniería de Sistemas, 7.º semestre<br>Fundación Universitaria Claretiana (Uniclaretiana) · Docente: Nancy González Ramírez</p>
+    <nav>
+      <a href="../index.html">Inicio</a>
+      <a href="../recursos/index.html">Recursos</a><a href="../contacto/index.html">Contacto</a>
+      <a href="../acerca-de/index.html">Acerca de</a>
+    </nav>
+  </div>
+</footer>
+<script src="../assets/js/main.js?v=4"></script>
+</body>
+</html>
